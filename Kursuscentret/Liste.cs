@@ -63,7 +63,7 @@ namespace Kursuscentret {
         public static string[] ListUndervisere() {
             var n = _undervisere.Count;
             string[] undervisere = new string[n]; 
-            string[] header = new string[4] {"Navn","Alder","Aktiv","Kompetencer"};
+            //string[] header = new string[4] {"Navn","Alder","Aktiv","Kompetencer"};
             //undervisere[0] = $"{header[0],-30}{header[1],-5}{header[2],-3}{header[3],-40}";
             for (var i = 0; i < n; i++) {
                 undervisere[i] =

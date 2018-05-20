@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text.RegularExpressions;
+using System.Xml.Serialization.Configuration;
 
 namespace Kursuscentret {
     class Menu {
@@ -105,24 +108,11 @@ namespace Kursuscentret {
                         TilfoejUnderviser();
                         break;
                     case 2: // Vælg aktiv underviser fra liste ---
-                        //Console.WriteLine(Liste.ListUndervisere());
-                        var list = Liste.ListUndervisere();
-                        foreach (var u in list) {
-                            Console.WriteLine(u);
-                        }
-                        Console.Write("Vælg nu hvilken underviser der skal være den aktive: ");
-                        string sInput = Console.ReadLine();
-                        if (Regex.IsMatch(sInput, @"^\d+$")) {
-                            _valgtUnderviser = int.Parse(sInput);
-                        }
-                        else {
-                            Console.WriteLine("Du skal vælge en underviser fra listen.");
-                        }
-
+                        ListUndervisere();
                         break;
                     case 3:
                          // Ændre data for valgt underviser  ---- List alle variable med nuværende værdi som std, men mulighed for at sætte en ny.
-
+                         ModificerUnderviser();
                         break;
                     case 4: // Skift status for valgt underviser
                         Underviser.SwitchStatus(_valgtUnderviser - 1);
@@ -149,29 +139,63 @@ namespace Kursuscentret {
                 Console.WriteLine();
                 Console.Write("Hvad hedder den nye underviser?: ");
                 string navn = Console.ReadLine();
-                Console.Write("Indtast fødselsdato: ");
-                DateTime fDag = DateTime.Parse(Console.ReadLine());
+                Console.Write("Indtast fødselsdato: (dd-mm-yyyy): ");
+                DateTime fDag = DateTime.Today;
+                bool returnval = false;
+                do {
+                    returnval = DateTime.TryParse(Console.ReadLine(), out fDag);
+                    if (!returnval) {
+                        Console.WriteLine("Du skal bruge formatet dd-mm-yyyy.");
+                    }
+                } while (!returnval);
+                //DateTime.Parse(Console.ReadLine());
                 Console.Write("Skal underviseren tilføjes som aktiv? (j/n): ");
                 string tmp = Console.ReadLine().ToLower();
                 bool aktiv = tmp.Equals("j");
                 Console.Write($"Hvilke fag skal tilknyttes {navn}? (Hvis flere fag, adskil med komma): ");
                 tmp = Console.ReadLine();
                 // todo: for-løkke med strip på hver enkelt element for mellemrum.
-                string[] kompetencer;
-                if (tmp.Contains(",")) {
-                    kompetencer = tmp.Split(',');
-                    for (int i = 0; i < kompetencer.Length; i++) {
-                        kompetencer[i].Trim();
+                string [] kompetencer = null;
+                if (tmp != null) {
+                    if (tmp.Contains(',')) {
+                        kompetencer = tmp.Split(',');
+                    }
+                    else {
+                        kompetencer = new string[] {tmp};
                     }
                 }
                 else {
-                    kompetencer = new string[] {tmp};
+                    kompetencer = new string[]{};
+                }
+                for (var i = 0; i > kompetencer.Length; i++) {
+                    kompetencer[i]= kompetencer[i].Trim();
                 }
                 Underviser.Add(navn, fDag, aktiv, kompetencer);
                 Console.WriteLine("Vil du tilføje flere undervisere?");
                 tilfoejFlere = Console.ReadLine();
             } while (tilfoejFlere == "j");
         }
+
+        private void ListUndervisere() {
+            var list = Liste.ListUndervisere();
+            foreach (var u in list) {
+                Console.WriteLine(u);
+            }
+            Console.Write("Vælg nu hvilken underviser der skal være den aktive: ");
+            string sInput = Console.ReadLine();
+            if (Regex.IsMatch(sInput, @"^\d+$")) {
+                _valgtUnderviser = int.Parse(sInput);
+            }
+            else {
+                Console.WriteLine("Du skal vælge en underviser fra listen.");
+            }
+
+        }
+
+        private void ModificerUnderviser() {
+
+        }
+
         private void TilfoejKursus() {
             Console.WriteLine("Navn på kursus: ");
             string navn = Console.ReadLine();
@@ -198,5 +222,3 @@ namespace Kursuscentret {
         }
     }
 }
-
-

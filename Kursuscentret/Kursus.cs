@@ -35,7 +35,7 @@ namespace Kursuscentret
         }
 
         // consr
-        private Kursus() : this("Ikke-navngivet kursus", DateTime.Today, 5, "Et defaultkursus") {
+        private Kursus() : this("Ikke-navngivet kursus") {
         }
 
         private Kursus(string navn) {

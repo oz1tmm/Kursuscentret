@@ -12,13 +12,15 @@ namespace Kursuscentret
         // Properties
         public string Kompetencer {
             get {
-                string s = null;
-                for (var i = 0; i < _kompetencer.Length; i++) {
-                    s = $"{_kompetencer[i]}";
-                    if (i + 1 != _kompetencer.Length) {
+                var s = "[";
+                for (var index = 0; index < _kompetencer.Length; index++) {
+                    s += $"{_kompetencer[index]}";
+                    if (index != _kompetencer.Length-1) {
                         s += ",";
                     }
                 }
+
+                s += "]";
                 return s;
             }
         }
