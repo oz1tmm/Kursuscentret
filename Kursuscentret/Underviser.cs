@@ -34,8 +34,7 @@ namespace Kursuscentret
             _active = false;
         }
 
-        public Underviser(string navn, bool active, string[] kompetencer) {
-            Name = navn;
+        public Underviser(string navn, DateTime birthDateTime, bool active, string[] kompetencer) : base(navn, birthDateTime) {
             _kompetencer = kompetencer;
             _active = active;
         }
@@ -44,12 +43,12 @@ namespace Kursuscentret
         // Member functions
 
         public static void Add(string navn) {
-            //Add(s, new string[]{});
-            Liste.Add(new Underviser(navn, false, new string[]{}));
+            Liste.Add(new Underviser(navn, DateTime.Today, false, new string[]{}));
         }
 
-        public static void Add(string navn, bool aktiv, string[] kompetencer) {
-            Liste.Add(new Underviser(navn, aktiv, kompetencer));
+        public static void Add(string navn, DateTime fDag, bool aktiv, string[] kompetencer) {
+            Underviser tmp = new Underviser(navn, fDag, aktiv, kompetencer);
+            Liste.Add(tmp);
         }
 
 //        public static string ListUndervisere() {
@@ -65,7 +64,8 @@ namespace Kursuscentret
 //        }
         
         public static void SwitchStatus(int objId) {
-            
+            // Not yet implemented
         }
+
     }
 }

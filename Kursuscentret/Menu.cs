@@ -157,7 +157,7 @@ namespace Kursuscentret {
                 // todo: for-løkke med strip på hver enkelt element for mellemrum.
                 string[] kompetencer;
                 if (tmp.Contains(",")) {
-                    kompetencer = tmp.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                    kompetencer = tmp.Split(',');
                     for (int i = 0; i < kompetencer.Length; i++) {
                         kompetencer[i].Trim();
                     }

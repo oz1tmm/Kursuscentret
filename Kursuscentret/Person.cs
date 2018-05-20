@@ -37,7 +37,7 @@ namespace Kursuscentret {
         // Consr
         protected Person() { } // Should never be used, but needed.
 
-        protected Person(string name, DateTime birthdate, int id) {
+        protected Person(string name, DateTime birthdate) {
             _name = name;
             _birthdate = birthdate;
             _id = ++_idx;
