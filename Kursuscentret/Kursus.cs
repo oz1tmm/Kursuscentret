@@ -5,14 +5,14 @@ using System.Runtime.InteropServices.ComTypes;
 
 namespace Kursuscentret
 {
-    class Kursus {
+    public class Kursus {
         // Fields.
         private string _kursusNavn;
         private int _kursusId;
         private DateTime _kursusStart;
         private int _varighed;
         private string _description;
-        private List<Kursist> tilmeldteKursister = new List<Kursist>(); 
+        //private List<Kursist> tilmeldteKursister = new List<Kursist>(); 
 
         private static int idx = 500;
 

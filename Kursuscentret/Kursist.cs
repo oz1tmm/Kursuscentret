@@ -2,7 +2,7 @@
 
 namespace Kursuscentret
 {
-    class Kursist : Person {
+    public class Kursist : Person {
         
         public void TilmeldKursus()
         {

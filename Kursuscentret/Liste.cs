@@ -4,11 +4,23 @@ using System.Collections.Generic;
 
 namespace Kursuscentret {
     [Serializable]
-    class Liste {
+    public class Liste {
         private static readonly List<Underviser> _undervisere = new List<Underviser>(); 
         private static readonly List<Kursus> _kurser = new List<Kursus>();
         private static readonly List<Kursist> _kursister = new List<Kursist>();
+        private static Liste instance;
 
+        private Liste() { }
+
+        public static Liste Instance {
+            get {
+                if (instance == null) {
+                    instance = new Liste();
+                }
+                return instance;
+            }
+        }
+        
         public static int AntalUndervisere {
             get { return _undervisere.Count; }
         }

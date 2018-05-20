@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace Kursuscentret {
-    abstract class Person {
+    public abstract class Person {
         private string _name;
         private DateTime _birthdate;
         private int _id;

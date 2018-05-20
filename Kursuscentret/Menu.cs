@@ -149,6 +149,8 @@ namespace Kursuscentret {
                 Console.WriteLine();
                 Console.Write("Hvad hedder den nye underviser?: ");
                 string navn = Console.ReadLine();
+                Console.Write("Indtast fødselsdato: ");
+                DateTime fDag = DateTime.Parse(Console.ReadLine());
                 Console.Write("Skal underviseren tilføjes som aktiv? (j/n): ");
                 string tmp = Console.ReadLine().ToLower();
                 bool aktiv = tmp.Equals("j");
@@ -165,7 +167,7 @@ namespace Kursuscentret {
                 else {
                     kompetencer = new string[] {tmp};
                 }
-                Underviser.Add(navn, aktiv, kompetencer);
+                Underviser.Add(navn, fDag, aktiv, kompetencer);
                 Console.WriteLine("Vil du tilføje flere undervisere?");
                 tilfoejFlere = Console.ReadLine();
             } while (tilfoejFlere == "j");

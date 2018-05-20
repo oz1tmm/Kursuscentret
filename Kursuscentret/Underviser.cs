@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Kursuscentret
 {
-    class Underviser : Person {
+    public class Underviser : Person {
         private string[] _kompetencer;
         private bool _active;
         
@@ -47,8 +47,8 @@ namespace Kursuscentret
         }
 
         public static void Add(string navn, DateTime fDag, bool aktiv, string[] kompetencer) {
-            Underviser tmp = new Underviser(navn, fDag, aktiv, kompetencer);
-            Liste.Add(tmp);
+            //Underviser tmp = new Underviser(navn, fDag, aktiv, kompetencer);
+            Liste.Add(new Underviser(navn, fDag, aktiv, kompetencer));
         }
 
 //        public static string ListUndervisere() {
