@@ -13,6 +13,7 @@ namespace Kursuscentret
         private int _varighed;
         private string _description;
         //private List<Kursist> tilmeldteKursister = new List<Kursist>(); 
+        private Underviser _underviser;
 
         private static int idx = 500;
 
@@ -38,11 +39,7 @@ namespace Kursuscentret
         private Kursus() : this("Ikke-navngivet kursus") {
         }
 
-        private Kursus(string navn) {
-            _kursusNavn = navn;
-            _kursusId = ++idx;  
-            _kursusStart = DateTime.Today;
-            _varighed = 5;
+        private Kursus(string navn) : this(navn, DateTime.Today, 5, "Default Kursus") {
         }
 
         private Kursus(string navn, DateTime dato, int varighed, string desc) { 
@@ -53,10 +50,17 @@ namespace Kursuscentret
             _description = desc;
         }
 
+        private Kursus(string navn, DateTime dato, int varighed,string desc, Underviser u) :this(navn, dato, varighed, desc) {
+            _underviser = u;
+        }
 
-        
+    
         public static void Add(string navn, DateTime startDato, int varighed, string desc) {
-            Liste.Add(new Kursus(navn, startDato, varighed, desc));  
+            Liste.Add(new Kursus(navn, startDato, varighed, desc));
+        }
+
+        public static void Add(string navn, DateTime startDato, int varighed, string desc, Underviser underviser) {
+            Liste.Add(new Kursus(navn, startDato, varighed, desc, underviser));
         }
     }
 }

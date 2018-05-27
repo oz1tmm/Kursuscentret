@@ -9,12 +9,12 @@ namespace Kursuscentret {
 
         public string Name {
             get { return _name; }
-            set { }
+            set { _name = value; }
         }
 
-        protected int Id {
+        public int Id {
             get { return _id; }
-            set { }
+            set { _id = ++_idx; }
         }
 
         //protected int Age => _birthdate.Subtract(DateTime.Now).Hours/86400;

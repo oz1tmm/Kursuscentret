@@ -8,7 +8,9 @@ namespace Kursuscentret {
     class Program {
         static void Main(string[] args) {
             Menu menu = new Menu();
-            menu.Start();
+            Liste list = new Liste();
+            //list = list.HentData();
+            menu.Start(ref list);
 
         }
     }

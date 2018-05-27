@@ -8,12 +8,12 @@ namespace Kursuscentret {
     class Menu {
 
         private int _valg;
-        private int _valgtKursus;
-        private int _valgtUnderviser;
+        private int _valgtKursus = 0;
+        private int _valgtUnderviser = 0;
 
 
         // Member functions
-        public void Start() {
+        public void Start(ref Liste list) {
             do {
                 Console.Clear();
                 Console.WriteLine("****************************************************");
@@ -37,7 +37,7 @@ namespace Kursuscentret {
                         KusrsistMenu();
                         break;
                     case 3:
-                        Administrationsmenu();
+                        Administrationsmenu(list);
                         break;
                     default:
                         break;
@@ -84,23 +84,28 @@ namespace Kursuscentret {
             // Todo: Skrive kursistmenu her.
         }
 
-        private void Administrationsmenu() {
+        private void Administrationsmenu(Liste list) {
+            string uNavn = string.Empty;
             do {
+                if (_valgtUnderviser != 0) {
+                    uNavn = Liste.GetUnderviser(_valgtUnderviser).Name;
+                }
                 Console.Clear();
                 Console.WriteLine("!!  Administration !!");
                 Console.WriteLine();
                 Console.WriteLine("  1. Tilføj Underviser ");
                 Console.WriteLine("  2. Vælg underviser fra liste");
-                Console.WriteLine("  3  Ændre data for valgt underviser");
+                Console.WriteLine("  3  Ændre kompetencer for valgt underviser");
                 Console.WriteLine("  4. Gør valgte underviser aktiv/inaktiv");
                 Console.WriteLine("  5. Opret kursus");
                 Console.WriteLine("  6. Ændre Kursus");
+                Console.WriteLine("  8. Gem data");
                 Console.WriteLine();
                 Console.WriteLine("  9. Tilbage");
                 Console.WriteLine("  0. Afslut");
                 Console.WriteLine();
                 Console.WriteLine(
-                    $"Valgt Underviser er: {_valgtUnderviser}"); // Indsæt evt også navnet på den valgte underviser her... 
+                    $"Valgt Underviser er: {_valgtUnderviser} - {uNavn}"); //{Liste.GetUnderviser(_valgtUnderviser).Name}"); // Indsæt evt også navnet på den valgte underviser her... 
                 Console.Write(" Valg: ");
                 _valg = int.Parse(Console.ReadLine());
                 switch (_valg) {
@@ -115,18 +120,25 @@ namespace Kursuscentret {
                          ModificerUnderviser();
                         break;
                     case 4: // Skift status for valgt underviser
-                        Underviser.SwitchStatus(_valgtUnderviser - 1);
+                        // Ikke kønt, men det virker
+                        string result = Underviser.SwitchStatus(_valgtUnderviser);
+                        Console.WriteLine($"Den valgte underviser er nu sat til {result}");
+                        Console.WriteLine("Tryk enter for at komme tilbage til menuen");
+                        Console.ReadLine();
                         break;
                     case 5: // Opret kursus
                         TilfoejKursus();
                         break;
                     case 6: // Ændre Kursus
                         break;
+                    case 8:
+                        list.GemData();
+                        break;
                     case 9:
-                        Start();
+                        Start(ref list);
                         break;
                     default:
-                        Console.WriteLine("Du skal væælge 1 til 6.");
+                        Console.WriteLine("Du skal væælge 1 til 6, eller 9");
                         break;
                 }
             } while (_valg != 0);
@@ -154,21 +166,21 @@ namespace Kursuscentret {
                 bool aktiv = tmp.Equals("j");
                 Console.Write($"Hvilke fag skal tilknyttes {navn}? (Hvis flere fag, adskil med komma): ");
                 tmp = Console.ReadLine();
-                // todo: for-løkke med strip på hver enkelt element for mellemrum.
+                // todo: for-løkke med strip på hver enkelt element for mellemrum. 
                 string [] kompetencer = null;
                 if (tmp != null) {
                     if (tmp.Contains(',')) {
-                        kompetencer = tmp.Split(',');
+                        kompetencer = tmp.Split(new [] {','}, StringSplitOptions.RemoveEmptyEntries);// StringSplitOptions.RemoveEmptyEntries);
+                        for (int i = 0; i < kompetencer.Length; i++) {
+                            kompetencer[i].Trim();
+                        }
                     }
                     else {
-                        kompetencer = new string[] {tmp};
+                        kompetencer = new string[] {tmp.Trim()};
                     }
                 }
                 else {
                     kompetencer = new string[]{};
-                }
-                for (var i = 0; i > kompetencer.Length; i++) {
-                    kompetencer[i]= kompetencer[i].Trim();
                 }
                 Underviser.Add(navn, fDag, aktiv, kompetencer);
                 Console.WriteLine("Vil du tilføje flere undervisere?");
@@ -192,8 +204,12 @@ namespace Kursuscentret {
 
         }
 
+        //todo: Lave modificering af underviser. dvs GemUnderviser() i Underviser-klassen, der henter fra Liste.
         private void ModificerUnderviser() {
-
+            Console.WriteLine($"Hvilke fag skal {Liste.GetUnderviser(_valgtUnderviser).Name} have? : ");
+            string input = Console.ReadLine();
+            string[] kompetencer = input.Split(new char[] {','}, StringSplitOptions.RemoveEmptyEntries);
+            Underviser.ModificerKompetencer(_valgtUnderviser, kompetencer);
         }
 
         private void TilfoejKursus() {
@@ -220,5 +236,7 @@ namespace Kursuscentret {
             string description = Console.ReadLine();
             Kursus.Add(navn, startDato, varighed, description);
         }
+
+        
     }
 }

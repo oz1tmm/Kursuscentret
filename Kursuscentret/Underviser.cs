@@ -6,16 +6,16 @@ namespace Kursuscentret
     public class Underviser : Person {
         private string[] _kompetencer;
         private bool _active;
-        
 
-        
+
+
         // Properties
         public string Kompetencer {
             get {
                 var s = "[";
                 for (var index = 0; index < _kompetencer.Length; index++) {
                     s += $"{_kompetencer[index]}";
-                    if (index != _kompetencer.Length-1) {
+                    if (index != _kompetencer.Length - 1) {
                         s += ",";
                     }
                 }
@@ -23,20 +23,28 @@ namespace Kursuscentret
                 s += "]";
                 return s;
             }
+            set {
+                if (!value.Equals("")) {
+                    value.Split(new[] {',', '.'}, StringSplitOptions.RemoveEmptyEntries);
+                }
+
+            }
         }
 
         public bool Active {
             get { return _active; }
+            set { _active = !_active; }
         }
 
         // Consr
-        public Underviser() {
+        private Underviser() {
             Name = "Tom constructor benyttet.";
             _kompetencer = new string[] { }; // Empty array of strings
             _active = false;
         }
 
-        public Underviser(string navn, DateTime birthDateTime, bool active, string[] kompetencer) : base(navn, birthDateTime) {
+        private Underviser(string navn, DateTime birthDateTime, bool active, string[] kompetencer) : base(navn,
+            birthDateTime) {
             _kompetencer = kompetencer;
             _active = active;
         }
@@ -45,7 +53,7 @@ namespace Kursuscentret
         // Member functions
 
         public static void Add(string navn) {
-            Liste.Add(new Underviser(navn, DateTime.Today, false, new string[]{}));
+            Liste.Add(new Underviser(navn, DateTime.Today, false, new string[] { }));
         }
 
         public static void Add(string navn, DateTime fDag, bool aktiv, string[] kompetencer) {
@@ -64,10 +72,17 @@ namespace Kursuscentret
 //            s += $"\t\t\t\t{numUndervisere} undervisere i alt.";
 //            return s;
 //        }
+
         
-        public static void SwitchStatus(int objId) {
-            // Not yet implemented
+        public static string SwitchStatus(int id) {
+            //Liste.SwitchStatusUnderviser(id);
+            return Liste.SwitchStatusUnderviser(id);
         }
 
+        public static void ModificerKompetencer(int id, string[] kompetencer) {
+            Underviser tmpUnderviser = Liste.GetUnderviser(id);
+            tmpUnderviser._kompetencer = kompetencer;
+            Liste.GemNyeKompetencer(tmpUnderviser, kompetencer);
+        }
     }
 }
